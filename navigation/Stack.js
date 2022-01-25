@@ -12,9 +12,9 @@ const ScreenTwo = ({ navigation: { navigate } }) => (
     <Text>Two</Text>
   </TouchableOpacity>
 );
-const ScreenThree = ({ navigation: { goBack } }) => (
-  <TouchableOpacity onPress={() => goBack()}>
-    <Text>Go Back</Text>
+const ScreenThree = ({ navigation: { navigate } }) => (
+  <TouchableOpacity onPress={() => navigate("Tabs", { screen: "Search" })}>
+    <Text>Go to Search</Text>
   </TouchableOpacity>
 );
 
