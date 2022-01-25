@@ -22,7 +22,12 @@ const StackNavigator = createNativeStackNavigator();
 
 const Stack = () => {
   return (
-    <StackNavigator.Navigator>
+    <StackNavigator.Navigator
+      screenOptions={{
+        presentation: "modal",
+        animation: "slide_from_right",
+      }}
+    >
       <StackNavigator.Screen name="One" component={ScreenOne} />
       <StackNavigator.Screen name="Two" component={ScreenTwo} />
       <StackNavigator.Screen name="Three" component={ScreenThree} />
