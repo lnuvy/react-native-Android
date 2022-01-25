@@ -8,6 +8,7 @@ import { Asset, useAssets } from "expo-asset";
 import { NavigationContainer } from "@react-navigation/native";
 import Tabs from "./navigation/Tabs";
 import Stack from "./navigation/Stack";
+import Root from "./navigation/Root";
 
 export default function App() {
   // 코드가 간결해지지만 Image.prefetch() 를 사용할 수 없음
@@ -20,7 +21,7 @@ export default function App() {
   return (
     // 사용하려면 반드시 임포트 필요
     <NavigationContainer>
-      <Stack />
+      <Root />
     </NavigationContainer>
   );
 }
