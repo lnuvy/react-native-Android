@@ -4,32 +4,33 @@ import Movies from "../screens/Movies";
 import Tv from "../screens/Tv";
 import Search from "../screens/Search";
 import { Text, View } from "react-native";
+import { useColorScheme } from "react-native";
+import { BLACK_COLOR, GRAY_COLOR, YELLOW_COLOR } from "../colors";
 
 const Tab = createBottomTabNavigator();
 
-const Tabs = () => (
-  <Tab.Navigator
-    // screenOptions = 모든 레이블에 적용 , options = 각각의 컴포넌트 적용
-    screenOptions={{
-      tabBarStyle: { backgroundColor: "tomato" },
-      tabBarLabelPosition: "beside-icon",
-    }}
-  >
-    <Tab.Screen
-      name="Movies"
-      component={Movies}
-      options={{
-        headerTitleStyle: { color: "cyan" },
-        headerRight: () => (
-          <View>
-            <Text>Hello</Text>
-          </View>
-        ),
+const Tabs = () => {
+  const isDark = useColorScheme() !== "dark";
+  return (
+    <Tab.Navigator
+      screenOptions={{
+        tabBarStyle: {
+          backgroundColor: isDark ? BLACK_COLOR : "white",
+        },
+        tabBarActiveTintColor: isDark ? YELLOW_COLOR : BLACK_COLOR,
+        tabBarInactiveTintColor: GRAY_COLOR,
+        headerStyle: {
+          backgroundColor: isDark ? BLACK_COLOR : "white",
+        },
+        headerTitleStyle: {
+          color: isDark ? YELLOW_COLOR : BLACK_COLOR,
+        },
       }}
-    />
-    <Tab.Screen name="Tv" component={Tv} options={{ tabBarBadge: 5 }} />
-    <Tab.Screen name="Search" component={Search} />
-  </Tab.Navigator>
-);
-
+    >
+      <Tab.Screen name="Movies" component={Movies} />
+      <Tab.Screen name="Tv" component={Tv} />
+      <Tab.Screen name="Search" component={Search} />
+    </Tab.Navigator>
+  );
+};
 export default Tabs;
