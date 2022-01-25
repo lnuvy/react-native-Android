@@ -1,26 +1,31 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native";
+import { Dimensions } from "react-native";
 import styled from "styled-components/native";
+import Swiper from 'react-native-web-swiper';
 
-const Btn = styled.TouchableOpacity`
+const Container = styled.ScrollView`
+  background-color: ${props => props.theme.mainBgColor};
+`
+
+const View = styled.View`
   flex: 1;
-  justify-content: center;
-  align-items: center;
-  background-color: ${(props) => props.theme.mainBgColor};
-`;
+`
 
-const Title = styled.Text`
-  color: ${(props) => props.theme.textColor};
-`;
+const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
-const Header = styled.View``;
-
-const Movies: React.FC<NativeStackScreenProps<any, 'Movies'>> = ({ navigation: { navigate } }) => (
-  <Btn onPress={() => navigate("Stack", { screen: "Three" })}>
-    <Title>Movies</Title>
-  </Btn>
-);
+const Movies: React.FC<NativeStackScreenProps<any, 'Movies'>> = () => {
+  return (
+    <Container>
+      <Swiper containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}>
+        <View style={{ backgroundColor: "red"}}></View>
+        <View style={{ backgroundColor: "blue"}}></View>
+        <View style={{ backgroundColor: "cyan"}}></View>
+        <View style={{ backgroundColor: "tomato"}}></View>
+        <View style={{ backgroundColor: "black"}}></View>
+      </Swiper>
+    </Container>
+  )
+}
 
 export default Movies;
