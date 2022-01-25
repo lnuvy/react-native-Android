@@ -22,7 +22,6 @@ export default function App() {
     return <AppLoading />;
   }
   return (
-    // 사용하려면 반드시 임포트 필요
     <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
       <NavigationContainer>
         <Root />
