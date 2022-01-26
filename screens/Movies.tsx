@@ -38,7 +38,25 @@ const ListTitle = styled.Text`
   margin-left: 30px;
 `;
 
-const Movie = styled.View``;
+const TrendingScroll = styled.ScrollView`
+  margin-top: 20px;
+`;
+
+const Movie = styled.View`
+  margin-right: 20px;
+  align-items: center;
+`;
+
+const Title = styled.Text`
+  color: black;
+  font-weight: 600;
+  margin-top: 7px;
+  margin-bottom: 5px;
+`;
+const Votes = styled.Text`
+  color: rgba(0, 0, 0, 0.6);
+  font-size: 10px;
+`;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -112,16 +130,24 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
         ))}
       </Swiper>
       <ListTitle>Trending Movies</ListTitle>
-      <ScrollView horizontal>
-        {trending.map((movie) => {
-          console.log(movie.poster_path);
-          return (
-            <Movie key={movie.id}>
-              <Poster path={movie.poster_path} />
-            </Movie>
-          );
-        })}
-      </ScrollView>
+      <TrendingScroll
+        contentContainerStyle={{
+          paddingLeft: 30,
+        }}
+        horizontal
+        // showsHorizontalScrollIndicator={false}
+      >
+        {trending.map((movie) => (
+          <Movie key={movie.id}>
+            <Poster path={movie.poster_path} />
+            <Title>
+              {movie.original_title.slice(0, 13)}
+              {movie.original_title.length > 13 ? "..." : null}
+            </Title>
+            <Votes>{movie.vote_average}/10</Votes>
+          </Movie>
+        ))}
+      </TrendingScroll>
     </Container>
   );
 };
