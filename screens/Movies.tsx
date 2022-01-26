@@ -141,7 +141,7 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
             paddingHorizontal: 30,
           }}
           // FlatList 에게 무엇이 item의 key 값인지 알려주는 속성
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id + ""}
           horizontal
           showsHorizontalScrollIndicator={false}
           data={trending}
