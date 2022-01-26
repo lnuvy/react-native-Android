@@ -40,10 +40,10 @@ const Poster = styled.Image`
   border-radius: 5px;
 `;
 
-const Title = styled.Text`
+const Title = styled.Text<{ isDark: boolean }>`
   font-size: 16px;
   font-weight: 600;
-  color: white;
+  color: ${(props) => (props.isDark ? "white" : props.theme.textColor)};
 `;
 const Wrapper = styled.View`
   flex-direction: row;
@@ -95,7 +95,7 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
       <Swiper
         controlsEnabled={false}
         loop
-        timeout={2}
+        timeout={5}
         containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}
       >
         {nowPlaying.map((movie) => (
@@ -109,9 +109,11 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
               <Wrapper>
                 <Poster source={{ uri: makeImgPath(movie.poster_path) }} />
                 <Column>
-                  <Title>{movie.original_title}</Title>
-                  <Overview>{movie.overview.slice(0, 80)}...</Overview>
-                  <Votes>{movie.vote_average}/10</Votes>
+                  <Title isDark={isDark}>{movie.original_title}</Title>
+                  <Votes isDark={isDark}>{movie.vote_average}/10</Votes>
+                  <Overview isDark={isDark}>
+                    {movie.overview.slice(0, 80)}...
+                  </Overview>
                 </Column>
               </Wrapper>
             </BlurView>
