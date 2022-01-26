@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
+  ScrollView,
   StyleSheet,
   Text,
   useColorScheme,
@@ -12,6 +13,7 @@ import Swiper from "react-native-web-swiper";
 import { makeImgPath } from "../utils";
 import { BlurView } from "expo-blur";
 import Slide from "../components/Slide";
+import Poster from "../components/Poster";
 
 const API_KEY = "71f43de951c136a669bee61f1fbf4c5b";
 
@@ -28,6 +30,15 @@ const Loader = styled.View`
   justify-content: center;
   align-items: center;
 `;
+
+const ListTitle = styled.Text`
+  color: black;
+  font-size: 18px;
+  font-weight: 600;
+  margin-left: 30px;
+`;
+
+const Movie = styled.View``;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -83,7 +94,11 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
         controlsEnabled={false}
         loop
         timeout={5}
-        containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}
+        containerStyle={{
+          marginBottom: 20,
+          width: "100%",
+          height: SCREEN_HEIGHT / 4,
+        }}
       >
         {nowPlaying.map((movie) => (
           <Slide
@@ -96,6 +111,14 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
           />
         ))}
       </Swiper>
+      <ListTitle>Trending Movies</ListTitle>
+      <ScrollView horizontal>
+        {trending.map((movie) => (
+          <Movie key={movie.id}>
+            <Poster path={movie.poster_path} />
+          </Movie>
+        ))}
+      </ScrollView>
     </Container>
   );
 };
