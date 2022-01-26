@@ -8,12 +8,19 @@ const Image = styled.Image`
   border-radius: 5px;
 `;
 
+const Test = styled.View`
+  border: 1px solid blue;
+`;
 interface PosterProps {
   path: string;
 }
 
 const Poster: React.FC<PosterProps> = ({ path }) => {
-  return <Image source={{ uri: makeImgPath(path) }} />;
+  return (
+    <Test>
+      <Image source={{ uri: makeImgPath(path) }} />
+    </Test>
+  );
 };
 
 export default Poster;
