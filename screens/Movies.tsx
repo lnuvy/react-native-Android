@@ -8,7 +8,7 @@ import {
   useColorScheme,
 } from "react-native";
 import styled from "styled-components/native";
-import Swiper from "react-native-swiper";
+import Swiper from "react-native-web-swiper";
 import { makeImgPath } from "../utils";
 import { BlurView } from "expo-blur";
 
@@ -34,12 +34,41 @@ const BgImg = styled.Image`
   position: absolute;
 `;
 
-const Title = styled.Text``;
+const Poster = styled.Image`
+  width: 100px;
+  height: 140px;
+  border-radius: 5px;
+`;
+
+const Title = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+`;
+const Wrapper = styled.View`
+  flex-direction: row;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+`;
+const Column = styled.View`
+  width: 40%;
+  margin-left: 15px;
+`;
+const Overview = styled.Text`
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.6);
+`;
+
+// Overview 의 속성을 모두 가져오게됨
+const Votes = styled(Overview)`
+  margin-top: 3px;
+`;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
-  const isDark = useColorScheme() === "dark";
+  const isDark = useColorScheme() !== "dark";
   const [loading, setLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState([]);
 
@@ -64,11 +93,9 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   ) : (
     <Container>
       <Swiper
-        horizontal
-        autoplayTimeout={3.5}
+        controlsEnabled={false}
         loop
-        showsButtons={false}
-        showsPagination={false}
+        timeout={2}
         containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}
       >
         {nowPlaying.map((movie) => (
@@ -76,10 +103,17 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
             <BgImg source={{ uri: makeImgPath(movie.backdrop_path) }} />
             <BlurView
               tint={isDark ? "dark" : "light"}
-              intensity={80}
+              intensity={100}
               style={StyleSheet.absoluteFill}
             >
-              <Title>{movie.original_title}</Title>
+              <Wrapper>
+                <Poster source={{ uri: makeImgPath(movie.poster_path) }} />
+                <Column>
+                  <Title>{movie.original_title}</Title>
+                  <Overview>{movie.overview.slice(0, 80)}...</Overview>
+                  <Votes>{movie.vote_average}/10</Votes>
+                </Column>
+              </Wrapper>
             </BlurView>
           </View>
         ))}
