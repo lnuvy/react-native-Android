@@ -1,5 +1,5 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Dimensions } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
@@ -23,14 +23,21 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   const [loading, setLoading] = useState(true);
 
-  const getNowPlaying = () => {
-    fetch(
+  const getNowPlaying = async () => {
+    const response = await fetch(
       `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR`
     );
+    const json = await response.json();
+    console.log(json);
   };
+
+  useEffect(() => {
+    getNowPlaying();
+  }, []);
+
   return loading ? (
     <Loader>
-      <ActivityIndicator size="large" />
+      <ActivityIndicator color="#999999" size={24} />
     </Loader>
   ) : (
     <Container>
