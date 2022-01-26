@@ -113,11 +113,14 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
       </Swiper>
       <ListTitle>Trending Movies</ListTitle>
       <ScrollView horizontal>
-        {trending.map((movie) => (
-          <Movie key={movie.id}>
-            <Poster path={movie.poster_path} />
-          </Movie>
-        ))}
+        {trending.map((movie) => {
+          console.log(movie.poster_path);
+          return (
+            <Movie key={movie.id}>
+              <Poster path={movie.poster_path} />
+            </Movie>
+          );
+        })}
       </ScrollView>
     </Container>
   );
