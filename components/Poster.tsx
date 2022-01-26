@@ -6,10 +6,11 @@ const Image = styled.Image`
   width: 100px;
   height: 140px;
   border-radius: 5px;
+  background-color: gray;
 `;
 
 const Test = styled.View`
-  border: 1px solid blue;
+  /* border: 1px solid blue; */
 `;
 interface PosterProps {
   path: string;
