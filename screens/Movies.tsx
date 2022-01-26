@@ -11,6 +11,7 @@ import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
 import { makeImgPath } from "../utils";
 import { BlurView } from "expo-blur";
+import Slide from "../components/Slide";
 
 const API_KEY = "71f43de951c136a669bee61f1fbf4c5b";
 
@@ -28,47 +29,9 @@ const Loader = styled.View`
   align-items: center;
 `;
 
-const BgImg = styled.Image`
-  width: 100%;
-  height: 100%;
-  position: absolute;
-`;
-
-const Poster = styled.Image`
-  width: 100px;
-  height: 140px;
-  border-radius: 5px;
-`;
-
-const Title = styled.Text<{ isDark: boolean }>`
-  font-size: 16px;
-  font-weight: 600;
-  color: ${(props) => (props.isDark ? "white" : props.theme.textColor)};
-`;
-const Wrapper = styled.View`
-  flex-direction: row;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-`;
-const Column = styled.View`
-  width: 40%;
-  margin-left: 15px;
-`;
-const Overview = styled.Text`
-  margin-top: 10px;
-  color: rgba(255, 255, 255, 0.6);
-`;
-
-// Overview 의 속성을 모두 가져오게됨
-const Votes = styled(Overview)`
-  margin-top: 3px;
-`;
-
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
-  const isDark = useColorScheme() !== "dark";
   const [loading, setLoading] = useState(true);
   const [nowPlaying, setNowPlaying] = useState([]);
 
@@ -99,25 +62,14 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
         containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}
       >
         {nowPlaying.map((movie) => (
-          <View key={movie.id}>
-            <BgImg source={{ uri: makeImgPath(movie.backdrop_path) }} />
-            <BlurView
-              tint={isDark ? "dark" : "light"}
-              intensity={100}
-              style={StyleSheet.absoluteFill}
-            >
-              <Wrapper>
-                <Poster source={{ uri: makeImgPath(movie.poster_path) }} />
-                <Column>
-                  <Title isDark={isDark}>{movie.original_title}</Title>
-                  <Votes isDark={isDark}>{movie.vote_average}/10</Votes>
-                  <Overview isDark={isDark}>
-                    {movie.overview.slice(0, 80)}...
-                  </Overview>
-                </Column>
-              </Wrapper>
-            </BlurView>
-          </View>
+          <Slide
+            key={movie.id}
+            backdropPath={movie.backdrop_path}
+            posterPath={movie.poster_path}
+            originalTitle={movie.original_title}
+            voteAverage={movie.vote_average}
+            overview={movie.overview}
+          />
         ))}
       </Swiper>
     </Container>
