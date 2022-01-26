@@ -1,3 +1,3 @@
-export const makeImgPath = (img: string) => {
-  return `https://image.tmdb.org/t/p/w500/${img}`;
+export const makeImgPath = (img: string, width: string = "w500") => {
+  return `https://image.tmdb.org/t/p/${width}/${img}`;
 };

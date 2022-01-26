@@ -1,9 +1,10 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, Text } from "react-native";
+import { ActivityIndicator, Dimensions, StyleSheet, Text } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
 import { makeImgPath } from "../utils";
+import { BlurView } from "expo-blur";
 
 const API_KEY = "71f43de951c136a669bee61f1fbf4c5b";
 
@@ -22,8 +23,12 @@ const Loader = styled.View`
 `;
 
 const BgImg = styled.Image`
-  flex: 1;
+  width: 100%;
+  height: 100%;
+  position: absolute;
 `;
+
+const Title = styled.Text``;
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
@@ -60,6 +65,9 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
         {nowPlaying.map((movie) => (
           <View key={movie.id}>
             <BgImg source={{ uri: makeImgPath(movie.backdrop_path) }} />
+            <BlurView intensity={80} style={StyleSheet.absoluteFill}>
+              <Title>{movie.original_title}</Title>
+            </BlurView>
           </View>
         ))}
       </Swiper>
