@@ -1,12 +1,15 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions } from "react-native";
+import { ActivityIndicator, Dimensions, Text } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
+import { makeImgPath } from "../utils";
 
 const API_KEY = "71f43de951c136a669bee61f1fbf4c5b";
 
-const Container = styled.ScrollView``;
+const Container = styled.ScrollView`
+  background-color: ${(props) => props.theme.mainBgColor};
+`;
 
 const View = styled.View`
   flex: 1;
@@ -18,18 +21,24 @@ const Loader = styled.View`
   align-items: center;
 `;
 
+const BgImg = styled.Image`
+  flex: 1;
+`;
+
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   const [loading, setLoading] = useState(true);
+  const [nowPlaying, setNowPlaying] = useState([]);
 
   const getNowPlaying = async () => {
-    const data = await (
+    const { results } = await (
       await fetch(
         `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR`
       )
     ).json();
-    console.log(data);
+    setNowPlaying(results);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -48,11 +57,11 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
         timeout={3}
         containerStyle={{ width: "100%", height: SCREEN_HEIGHT / 4 }}
       >
-        <View style={{ backgroundColor: "red" }}></View>
-        <View style={{ backgroundColor: "blue" }}></View>
-        <View style={{ backgroundColor: "cyan" }}></View>
-        <View style={{ backgroundColor: "tomato" }}></View>
-        <View style={{ backgroundColor: "black" }}></View>
+        {nowPlaying.map((movie) => (
+          <View key={movie.id}>
+            <BgImg source={{ uri: makeImgPath(movie.backdrop_path) }} />
+          </View>
+        ))}
       </Swiper>
     </Container>
   );
