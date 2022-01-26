@@ -3,27 +3,28 @@ import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Dimensions,
+  FlatList,
   RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
   useColorScheme,
+  View,
 } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
 import { makeImgPath } from "../utils";
-import { BlurView } from "expo-blur";
 import Slide from "../components/Slide";
 import Poster from "../components/Poster";
+import HMedia from "../components/HMedia";
+import Votes from "../components/Votes";
+import VMedia from "../components/VMedia";
 
 const API_KEY = "71f43de951c136a669bee61f1fbf4c5b";
 
 const Container = styled.ScrollView`
+  /* background-color: black; */
   background-color: ${(props) => props.theme.mainBgColor};
-`;
-
-const View = styled.View`
-  flex: 1;
 `;
 
 const Loader = styled.View`
@@ -39,50 +40,12 @@ const ListTitle = styled.Text`
   margin-left: 30px;
 `;
 
-const TrendingScroll = styled.ScrollView`
+const TrendingScroll = styled.FlatList`
   margin-top: 20px;
-`;
-
-const Movie = styled.View`
-  margin-right: 20px;
-  align-items: center;
-`;
-
-const Title = styled.Text`
-  color: black;
-  font-weight: 600;
-  margin-top: 7px;
-  margin-bottom: 5px;
-`;
-const Votes = styled.Text`
-  color: rgba(0, 0, 0, 0.6);
-  font-size: 10px;
 `;
 
 const ListContainer = styled.View`
   margin-bottom: 40px;
-`;
-
-const CommingMovie = styled.View`
-  padding: 0px 30px;
-  flex-direction: row;
-  margin-bottom: 30px;
-`;
-
-const CommingColumn = styled.View`
-  margin-left: 15px;
-  width: 80%;
-`;
-
-const Overview = styled.Text`
-  color: gray;
-  width: 80%;
-`;
-
-const Release = styled.Text`
-  color: black;
-  font-size: 12px;
-  margin-vertical: 10px;
 `;
 
 const CommingSoonTitle = styled(ListTitle)`
@@ -175,48 +138,31 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
         <ListTitle>Trending Movies</ListTitle>
         <TrendingScroll
           contentContainerStyle={{
-            paddingLeft: 30,
+            paddingHorizontal: 30,
           }}
           horizontal
-          // showsHorizontalScrollIndicator={false}
-        >
-          {trending.map((movie) => (
-            <Movie key={movie.id}>
-              <Poster path={movie.poster_path} />
-              <Title>
-                {movie.original_title.slice(0, 13)}
-                {movie.original_title.length > 13 ? "..." : null}
-              </Title>
-              <Votes>
-                {movie.vote_average > 0
-                  ? `${movie.vote_average}/10`
-                  : `Comming soon...`}
-              </Votes>
-            </Movie>
-          ))}
-        </TrendingScroll>
+          showsHorizontalScrollIndicator={false}
+          data={trending}
+          ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
+          renderItem={({ item }) => (
+            <VMedia
+              posterPath={item.poster_path}
+              originalTitle={item.original_title}
+              voteAverage={item.vote_average}
+            />
+          )}
+        />
       </ListContainer>
       <CommingSoonTitle>Comming Soon...</CommingSoonTitle>
       {upComing.map((movie) => {
         return (
-          <CommingMovie key={movie.id}>
-            <Poster path={movie.poster_path} />
-            <CommingColumn>
-              <Title>{movie.original_title}</Title>
-              <Release>
-                {new Date(movie.release_date).toLocaleDateString("ko", {
-                  month: "long",
-                  day: "numeric",
-                  year: "numeric",
-                })}
-              </Release>
-              <Overview>
-                {movie.overview !== "" && movie.overview.length > 150
-                  ? `${movie.overview.slice(0, 150)}...`
-                  : movie.overview}
-              </Overview>
-            </CommingColumn>
-          </CommingMovie>
+          <HMedia
+            key={movie.id}
+            posterPath={movie.poster_path}
+            originalTitle={movie.original_title}
+            overview={movie.overview}
+            releaseDate={movie.release_date}
+          />
         );
       })}
     </Container>
