@@ -24,11 +24,12 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   const [loading, setLoading] = useState(true);
 
   const getNowPlaying = async () => {
-    const response = await fetch(
-      `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR`
-    );
-    const json = await response.json();
-    console.log(json);
+    const data = await (
+      await fetch(
+        `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR`
+      )
+    ).json();
+    console.log(data);
   };
 
   useEffect(() => {
