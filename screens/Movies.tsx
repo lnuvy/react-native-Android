@@ -108,66 +108,69 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
       <ActivityIndicator color="#999999" size={24} />
     </Loader>
   ) : (
-    <Container
-      refreshControl={
-        <RefreshControl onRefresh={onRefresh} refreshing={refreshing} />
-      }
-    >
-      <Swiper
-        controlsEnabled={false}
-        loop
-        timeout={5}
-        containerStyle={{
-          marginBottom: 20,
-          width: "100%",
-          height: SCREEN_HEIGHT / 4,
-        }}
-      >
-        {nowPlaying.map((movie) => (
-          <Slide
-            key={movie.id}
-            backdropPath={movie.backdrop_path}
-            posterPath={movie.poster_path}
-            originalTitle={movie.original_title}
-            voteAverage={movie.vote_average}
-            overview={movie.overview}
-          />
-        ))}
-      </Swiper>
-      <ListContainer>
-        <ListTitle>Trending Movies</ListTitle>
-        <TrendingScroll
-          contentContainerStyle={{
-            paddingHorizontal: 30,
-          }}
-          // FlatList 에게 무엇이 item의 key 값인지 알려주는 속성
-          keyExtractor={(item) => item.id + ""}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={trending}
-          ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
-          renderItem={({ item }) => (
-            <VMedia
-              posterPath={item.poster_path}
-              originalTitle={item.original_title}
-              voteAverage={item.vote_average}
+    <FlatList
+      onRefresh={onRefresh}
+      refreshing={refreshing}
+      ListHeaderComponent={
+        <>
+          <Swiper
+            controlsEnabled={false}
+            loop
+            timeout={5}
+            containerStyle={{
+              marginBottom: 20,
+              width: "100%",
+              height: SCREEN_HEIGHT / 4,
+            }}
+          >
+            {nowPlaying.map((movie) => (
+              <Slide
+                key={movie.id}
+                backdropPath={movie.backdrop_path}
+                posterPath={movie.poster_path}
+                originalTitle={movie.original_title}
+                voteAverage={movie.vote_average}
+                overview={movie.overview}
+              />
+            ))}
+          </Swiper>
+          <ListContainer>
+            <ListTitle>Trending Movies</ListTitle>
+            <TrendingScroll
+              contentContainerStyle={{
+                paddingHorizontal: 30,
+              }}
+              // FlatList 에게 무엇이 item의 key 값인지 알려주는 속성
+              keyExtractor={(item) => item.id + ""}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              data={trending}
+              ItemSeparatorComponent={() => <View style={{ width: 20 }} />}
+              renderItem={({ item }) => (
+                <VMedia
+                  posterPath={item.poster_path}
+                  originalTitle={item.original_title}
+                  voteAverage={item.vote_average}
+                />
+              )}
             />
-          )}
+          </ListContainer>
+          <CommingSoonTitle>Comming Soon...</CommingSoonTitle>
+        </>
+      }
+      data={upComing}
+      keyExtractor={(item) => item.id + ""}
+      ItemSeparatorComponent={() => <View style={{ height: 30 }} />}
+      renderItem={({ item }) => (
+        <HMedia
+          key={item.id}
+          posterPath={item.poster_path}
+          originalTitle={item.original_title}
+          overview={item.overview}
+          releaseDate={item.release_date}
         />
-      </ListContainer>
-      <CommingSoonTitle>Comming Soon...</CommingSoonTitle>
-      {upComing.map((movie) => {
-        return (
-          <HMedia
-            key={movie.id}
-            posterPath={movie.poster_path}
-            originalTitle={movie.original_title}
-            overview={movie.overview}
-            releaseDate={movie.release_date}
-          />
-        );
-      })}
-    </Container>
+      )}
+    />
   );
 };
 
