@@ -1,24 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Dimensions,
-  FlatList,
-  RefreshControl,
-  ScrollView,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from "react-native";
+import { ActivityIndicator, Dimensions, FlatList } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
-import { makeImgPath } from "../utils";
 import Slide from "../components/Slide";
-import Poster from "../components/Poster";
 import HMedia from "../components/HMedia";
-import Votes from "../components/Votes";
 import VMedia from "../components/VMedia";
+import { useQuery } from "react-query";
+import { moviesAPI } from "../api";
 
 const Container = styled.ScrollView`
   /* background-color: black; */
@@ -54,7 +43,18 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   const [refreshing, setRefreshing] = useState(false);
-
+  const { isLoading: nowPlayingLoading, data: nowPlayingData } = useQuery(
+    "nowPlaying",
+    moviesAPI.nowPlaying
+  );
+  const { isLoading: upComingLoading, data: upComingData } = useQuery(
+    "trending",
+    moviesAPI.trending
+  );
+  const { isLoading: trendingLoading, data: trendingData } = useQuery(
+    "upComing",
+    moviesAPI.upComing
+  );
   useEffect(() => {}, []);
 
   const onRefresh = async () => {};
@@ -87,6 +87,8 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
 
   const movieKeyExtractor = (item) => item.id + "";
 
+  const loading = nowPlayingLoading || upComingLoading || trendingLoading;
+
   return loading ? (
     <Loader>
       <ActivityIndicator color="#999999" size={24} />
@@ -107,7 +109,7 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
               height: SCREEN_HEIGHT / 4,
             }}
           >
-            {nowPlaying.map((movie) => (
+            {nowPlayingData.results.map((movie) => (
               <Slide
                 key={movie.id}
                 backdropPath={movie.backdrop_path}
@@ -128,7 +130,7 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
               keyExtractor={movieKeyExtractor}
               horizontal
               showsHorizontalScrollIndicator={false}
-              data={trending}
+              data={trendingData.results}
               ItemSeparatorComponent={() => <VSeparator />}
               renderItem={renderVMedia}
             />
@@ -136,7 +138,7 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
           <CommingSoonTitle>Comming Soon...</CommingSoonTitle>
         </>
       }
-      data={upComing}
+      data={upComingData.results}
       keyExtractor={movieKeyExtractor}
       ItemSeparatorComponent={HSeparator}
       renderItem={renderHMedia}
