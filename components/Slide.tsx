@@ -6,7 +6,6 @@ import {
   useColorScheme,
   View,
   Platform,
-  TouchableOpacity,
   TouchableWithoutFeedback,
 } from "react-native";
 import styled from "styled-components/native";
@@ -61,8 +60,15 @@ const Slide: React.FC<SlideProps> = ({
   const isDark = useColorScheme() !== "dark";
   const navigation = useNavigation();
   const go2Detail = () => {
-    navigation.navigate("Stack", { screen: "Detail" });
+    //@ts-ignore
+    navigation.navigate("Stack", {
+      screen: "Detail",
+      params: {
+        originalTitle,
+      },
+    });
   };
+
   return (
     <TouchableWithoutFeedback onPress={go2Detail}>
       <View style={{ flex: 1 }}>

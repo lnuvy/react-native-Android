@@ -2,11 +2,16 @@ import React from "react";
 import { Text, View } from "react-native";
 import styled from "styled-components/native";
 
-const Detail = () => {
+const Container = styled.ScrollView`
+  background-color: ${(props) => props.theme.mainBgColor};
+`;
+
+const Detail = ({ route: { params } }) => {
+  console.log(params);
   return (
-    <View>
+    <Container>
       <Text>Detail</Text>
-    </View>
+    </Container>
   );
 };
 
