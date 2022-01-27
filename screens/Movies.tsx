@@ -6,7 +6,7 @@ import Swiper from "react-native-web-swiper";
 import Slide from "../components/Slide";
 import HMedia from "../components/HMedia";
 import VMedia from "../components/VMedia";
-import { useQuery } from "react-query";
+import { QueryClient, useQuery, useQueryClient } from "react-query";
 import { moviesAPI } from "../api";
 
 const Container = styled.ScrollView`
@@ -42,30 +42,26 @@ const CommingSoonTitle = styled(ListTitle)`
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
+  const QueryClient = useQueryClient();
+
   const {
     isLoading: nowPlayingLoading,
     data: nowPlayingData,
-    refetch: refetchNowPlaying,
     isRefetching: isRefetchingNowPlaying,
-  } = useQuery("nowPlaying", moviesAPI.nowPlaying);
+  } = useQuery(["movies", "nowPlaying"], moviesAPI.nowPlaying);
   const {
     isLoading: upComingLoading,
     data: upComingData,
-    refetch: refetchUpComing,
     isRefetching: isRefetchingUpComing,
-  } = useQuery("trending", moviesAPI.trending);
+  } = useQuery(["movies", "trending"], moviesAPI.trending);
   const {
     isLoading: trendingLoading,
     data: trendingData,
-    refetch: refetchTrending,
     isRefetching: isRefetchingTrending,
-  } = useQuery("upComing", moviesAPI.upComing);
-  // useEffect(() => {}, []);
+  } = useQuery(["movies", "upComing"], moviesAPI.upComing);
 
   const onRefresh = async () => {
-    refetchNowPlaying();
-    refetchUpComing();
-    refetchTrending();
+    QueryClient.refetchQueries(["movies"]);
   };
 
   const renderVMedia = ({ item }) => (
