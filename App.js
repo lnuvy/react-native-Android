@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import AppLoading from "expo-app-loading";
-import { Text, Image, useColorScheme } from "react-native";
+import { Text, Image, useColorScheme, LogBox } from "react-native";
 import * as Font from "expo-font";
 import { useFonts } from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,6 +12,9 @@ import Root from "./navigation/Root";
 import { ThemeProvider } from "styled-components";
 import { darkTheme, lightTheme } from "./styled";
 import { QueryClient, QueryClientProvider } from "react-query";
+
+// 새로고침시 Setting a timer for a long period of time .... 노란 에러 안보이게하기
+LogBox.ignoreLogs(["Setting a timer"]);
 
 const queryClient = new QueryClient();
 
