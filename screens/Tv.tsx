@@ -27,54 +27,9 @@ const Tv = () => {
   }
   return (
     <ScrollView contentContainerStyle={{ paddingVertical: 20 }}>
-      <HList title="Trending TV">
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={HListSeparator}
-          contentContainerStyle={{ paddingHorizontal: 20 }}
-          data={trendingData.results}
-          renderItem={({ item }) => (
-            <VMedia
-              posterPath={item.poster_path}
-              originalTitle={item.original_name}
-              voteAverage={item.vote_average}
-            />
-          )}
-        />
-      </HList>
-      <HList title="Airing TV">
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={HListSeparator}
-          contentContainerStyle={{ paddingHorizontal: 20 }}
-          data={todayData.results}
-          renderItem={({ item }) => (
-            <VMedia
-              posterPath={item.poster_path}
-              originalTitle={item.original_name}
-              voteAverage={item.vote_average}
-            />
-          )}
-        />
-      </HList>
-      <HList title="Top Rated TV">
-        <FlatList
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          ItemSeparatorComponent={HListSeparator}
-          contentContainerStyle={{ paddingHorizontal: 20 }}
-          data={topData.results}
-          renderItem={({ item }) => (
-            <VMedia
-              posterPath={item.poster_path}
-              originalTitle={item.original_name}
-              voteAverage={item.vote_average}
-            />
-          )}
-        />
-      </HList>
+      <HList title="Trending TV" data={trendingData.results} />
+      <HList title="Airing TV" data={todayData.results} />
+      <HList title="Top Rated TV" data={topData.results} />
     </ScrollView>
   );
 };
