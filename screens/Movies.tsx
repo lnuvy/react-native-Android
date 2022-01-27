@@ -20,8 +20,6 @@ import HMedia from "../components/HMedia";
 import Votes from "../components/Votes";
 import VMedia from "../components/VMedia";
 
-const API_KEY = "71f43de951c136a669bee61f1fbf4c5b";
-
 const Container = styled.ScrollView`
   /* background-color: black; */
   background-color: ${(props) => props.theme.mainBgColor};
@@ -56,52 +54,10 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   const [refreshing, setRefreshing] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [nowPlaying, setNowPlaying] = useState([]);
-  const [upComing, setUpComing] = useState([]);
-  const [trending, setTrending] = useState([]);
 
-  const getTrending = async () => {
-    const { results } = await (
-      await fetch(
-        `https://api.themoviedb.org/3/trending/movie/week?api_key=${API_KEY}`
-      )
-    ).json();
-    setTrending(results);
-  };
+  useEffect(() => {}, []);
 
-  const getUpcoming = async () => {
-    const { results } = await (
-      await fetch(
-        `https://api.themoviedb.org/3/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1&region=KR`
-      )
-    ).json();
-    setUpComing(results);
-  };
-
-  const getNowPlaying = async () => {
-    const { results } = await (
-      await fetch(
-        `https://api.themoviedb.org/3/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1&region=KR`
-      )
-    ).json();
-    setNowPlaying(results);
-  };
-
-  const getData = async () => {
-    await Promise.all([getTrending(), getUpcoming(), getNowPlaying()]);
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    getData();
-  }, []);
-
-  const onRefresh = async () => {
-    setRefreshing(true);
-    await getData();
-    setRefreshing(false);
-  };
+  const onRefresh = async () => {};
 
   const renderVMedia = ({ item }) => (
     <VMedia
