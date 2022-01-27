@@ -1,6 +1,22 @@
 const API_KEY = "71f43de951c136a669bee61f1fbf4c5b";
 const BASE_URL = "https://api.themoviedb.org/3";
 
+export interface TV {
+  name: string;
+  original_name: string;
+  origin_country: string[];
+  vote_count: number;
+  backdrop_path: string | null;
+  vote_average: number;
+  genre_ids: number[];
+  id: number;
+  original_language: string;
+  overview: string;
+  poster_path: string | null;
+  first_air_date: string;
+  popularity: number;
+  media_type: string;
+}
 export interface Movie {
   adult: boolean;
   backdrop_path: string | null;
