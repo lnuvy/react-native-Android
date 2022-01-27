@@ -9,6 +9,7 @@ import VMedia from "../components/VMedia";
 import { QueryClient, useQuery, useQueryClient } from "react-query";
 import { MovieResponse, moviesAPI } from "../api";
 import Loader from "../components/Loader";
+import HList from "../components/HList";
 
 const Container = styled.ScrollView`
   /* background-color: black; */
@@ -100,28 +101,9 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
               />
             ))}
           </Swiper>
-          <ListContainer>
-            <ListTitle>Trending Movies</ListTitle>
-            {trendingData ? (
-              <TrendingScroll
-                contentContainerStyle={{
-                  paddingHorizontal: 20,
-                }}
-                keyExtractor={(item) => item.id + ""}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                data={trendingData.results}
-                ItemSeparatorComponent={() => <VSeparator />}
-                renderItem={({ item }) => (
-                  <VMedia
-                    posterPath={item.poster_path || ""}
-                    originalTitle={item.original_title}
-                    voteAverage={item.vote_average}
-                  />
-                )}
-              />
-            ) : null}
-          </ListContainer>
+          {trendingData ? (
+            <HList title="Trending Movies" data={trendingData.results} />
+          ) : null}
           <CommingSoonTitle>Comming Soon...</CommingSoonTitle>
         </>
       }

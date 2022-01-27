@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 import VMedia from "./VMedia";
 
 const ListContainer = styled.View`
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 `;
 
 const ListTitle = styled.Text`
@@ -33,10 +33,12 @@ const HList: React.FC<HListProps> = ({ title, data }) => (
       showsHorizontalScrollIndicator={false}
       ItemSeparatorComponent={HListSeparator}
       contentContainerStyle={{ paddingHorizontal: 20 }}
+      keyExtractor={(item) => item.id + ""}
       renderItem={({ item }) => (
         <VMedia
           posterPath={item.poster_path}
-          originalTitle={item.original_name}
+          // 유용한 ??
+          originalTitle={item.original_title ?? item.original_name}
           voteAverage={item.vote_average}
         />
       )}
@@ -45,3 +47,26 @@ const HList: React.FC<HListProps> = ({ title, data }) => (
 );
 
 export default HList;
+
+// <ListContainer>
+//             <ListTitle>Trending Movies</ListTitle>
+//             {trendingData ? (
+//               <TrendingScroll
+//                 contentContainerStyle={{
+//                   paddingHorizontal: 20,
+//                 }}
+//                 keyExtractor={(item) => item.id + ""}
+//                 horizontal
+//                 showsHorizontalScrollIndicator={false}
+//                 data={trendingData.results}
+//                 ItemSeparatorComponent={() => <VSeparator />}
+//                 renderItem={({ item }) => (
+//                   <VMedia
+//                     posterPath={item.poster_path || ""}
+//                     originalTitle={item.original_title}
+//                     voteAverage={item.vote_average}
+//                   />
+//                 )}
+//               />
+//             ) : null}
+//           </ListContainer>
