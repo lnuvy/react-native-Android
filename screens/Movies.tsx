@@ -42,22 +42,31 @@ const CommingSoonTitle = styled(ListTitle)`
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
-  const [refreshing, setRefreshing] = useState(false);
-  const { isLoading: nowPlayingLoading, data: nowPlayingData } = useQuery(
-    "nowPlaying",
-    moviesAPI.nowPlaying
-  );
-  const { isLoading: upComingLoading, data: upComingData } = useQuery(
-    "trending",
-    moviesAPI.trending
-  );
-  const { isLoading: trendingLoading, data: trendingData } = useQuery(
-    "upComing",
-    moviesAPI.upComing
-  );
-  useEffect(() => {}, []);
+  const {
+    isLoading: nowPlayingLoading,
+    data: nowPlayingData,
+    refetch: refetchNowPlaying,
+    isRefetching: isRefetchingNowPlaying,
+  } = useQuery("nowPlaying", moviesAPI.nowPlaying);
+  const {
+    isLoading: upComingLoading,
+    data: upComingData,
+    refetch: refetchUpComing,
+    isRefetching: isRefetchingUpComing,
+  } = useQuery("trending", moviesAPI.trending);
+  const {
+    isLoading: trendingLoading,
+    data: trendingData,
+    refetch: refetchTrending,
+    isRefetching: isRefetchingTrending,
+  } = useQuery("upComing", moviesAPI.upComing);
+  // useEffect(() => {}, []);
 
-  const onRefresh = async () => {};
+  const onRefresh = async () => {
+    refetchNowPlaying();
+    refetchUpComing();
+    refetchTrending();
+  };
 
   const renderVMedia = ({ item }) => (
     <VMedia
@@ -88,6 +97,8 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   const movieKeyExtractor = (item) => item.id + "";
 
   const loading = nowPlayingLoading || upComingLoading || trendingLoading;
+  const refreshing =
+    isRefetchingNowPlaying || isRefetchingUpComing || isRefetchingTrending;
 
   return loading ? (
     <Loader>
