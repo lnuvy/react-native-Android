@@ -1,6 +1,14 @@
+import { useNavigation } from "@react-navigation/native";
 import { BlurView } from "expo-blur";
 import React from "react";
-import { StyleSheet, useColorScheme, View, Platform } from "react-native";
+import {
+  StyleSheet,
+  useColorScheme,
+  View,
+  Platform,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from "react-native";
 import styled from "styled-components/native";
 import { makeImgPath } from "../utils";
 import Poster from "./Poster";
@@ -51,24 +59,30 @@ const Slide: React.FC<SlideProps> = ({
   overview,
 }) => {
   const isDark = useColorScheme() !== "dark";
+  const navigation = useNavigation();
+  const go2Detail = () => {
+    navigation.navigate("Stack", { screen: "Detail" });
+  };
   return (
-    <View style={{ flex: 1 }}>
-      <BgImg source={{ uri: makeImgPath(backdropPath) }} />
-      <BlurView
-        intensity={Platform.OS === "ios" ? 60 : 100}
-        tint={"dark"}
-        style={StyleSheet.absoluteFill}
-      >
-        <Wrapper>
-          <Poster path={posterPath} />
-          <Column>
-            <Title isDark={isDark}>{originalTitle}</Title>
-            <Votes isDark={isDark}>{voteAverage}/10</Votes>
-            <Overview isDark={isDark}>{overview.slice(0, 80)}...</Overview>
-          </Column>
-        </Wrapper>
-      </BlurView>
-    </View>
+    <TouchableWithoutFeedback onPress={go2Detail}>
+      <View style={{ flex: 1 }}>
+        <BgImg source={{ uri: makeImgPath(backdropPath) }} />
+        <BlurView
+          intensity={Platform.OS === "ios" ? 60 : 100}
+          tint={"dark"}
+          style={StyleSheet.absoluteFill}
+        >
+          <Wrapper>
+            <Poster path={posterPath} />
+            <Column>
+              <Title isDark={isDark}>{originalTitle}</Title>
+              <Votes isDark={isDark}>{voteAverage}/10</Votes>
+              <Overview isDark={isDark}>{overview.slice(0, 80)}...</Overview>
+            </Column>
+          </Wrapper>
+        </BlurView>
+      </View>
+    </TouchableWithoutFeedback>
   );
 };
 
