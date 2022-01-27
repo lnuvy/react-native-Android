@@ -35,7 +35,6 @@ const Overview = styled.Text`
 const Votes = styled(Overview)`
   margin-top: 3px;
 `;
-
 interface SlideProps {
   backdropPath: string;
   posterPath: string;
