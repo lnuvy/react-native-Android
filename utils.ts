@@ -3,5 +3,5 @@ export const makeImgPath = (img: string, width: string = "w500") => {
 };
 
 export const makeVideoPath = (key: string) => {
-  return `https://www.youtube.com/watch?v=${key}`;
+  return `https://m.youtube.com/watch?v=${key}`;
 };
