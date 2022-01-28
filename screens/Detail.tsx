@@ -7,6 +7,8 @@ import { useQuery } from "react-query";
 import styled from "styled-components/native";
 import { Movie, moviesAPI, TV, tvAPI } from "../api";
 import { BLACK_COLOR, GRAY_COLOR } from "../colors";
+import CoverVideo from "../components/CoverVideo";
+import Loader from "../components/Loader";
 import Poster from "../components/Poster";
 import { makeImgPath } from "../utils";
 
@@ -37,10 +39,21 @@ const Title = styled.Text`
   font-weight: 500;
 `;
 
+const Data = styled.View`
+  padding: 0px 20px;
+`;
+
 const Overview = styled.Text`
   color: ${(props) => props.theme.textColor};
   margin-top: 20px;
-  padding: 0px 20px;
+  margin: 20px 0px;
+`;
+
+const VideoBtn = styled.TouchableOpacity``;
+
+const BtnText = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  font-weight: 500;
 `;
 
 type RootStackParamList = {
@@ -54,24 +67,14 @@ const Detail: React.FC<DetailScreenProps> = ({
   route: { params },
 }) => {
   const isDark = useColorScheme() === "dark";
+  const isMovie = "original_title" in params;
 
-  const { isLoading: moviesLoading, data: moviesData } = useQuery(
-    ["movies", params.id],
-    moviesAPI.detail,
-    {
-      enabled: "original_title" in params,
-    }
-  );
-  const { isLoading: tvLoading, data: tvData } = useQuery(
-    ["tv", params.id],
-    tvAPI.detail,
-    {
-      enabled: "original_name" in params,
-    }
+  const { isLoading, data } = useQuery(
+    [isMovie ? "movies" : "tv", params.id],
+    isMovie ? moviesAPI.detail : tvAPI.detail
   );
 
-  console.log("movies: ", moviesData);
-  console.log("tv: ", tvData);
+  console.log("디테일 77번: ", data?.videos?.results[0]?.key);
 
   useEffect(() => {
     setOptions({
@@ -81,10 +84,13 @@ const Detail: React.FC<DetailScreenProps> = ({
   return (
     <Container>
       <Headview>
-        <Background
-          style={StyleSheet.absoluteFill}
-          source={{ uri: makeImgPath(params.backdrop_path || "") }}
-        />
+        {isLoading ? (
+          <Background
+            source={{ uri: makeImgPath(params.backdrop_path || "") }}
+          />
+        ) : (
+          <CoverVideo path={data?.videos?.results[0]?.key || ""} />
+        )}
         <LinearGradient
           colors={
             isDark ? ["transparent", GRAY_COLOR] : ["transparent", "white"]
@@ -100,7 +106,15 @@ const Detail: React.FC<DetailScreenProps> = ({
           </Title>
         </Column>
       </Headview>
-      <Overview>{params.overview}</Overview>
+      <Data>
+        <Overview>{params.overview}</Overview>
+        {isLoading ? <Loader /> : null}
+        {data?.videos?.results?.map((video) => (
+          <VideoBtn key={video.key}>
+            <BtnText>{video.name}</BtnText>
+          </VideoBtn>
+        ))}
+      </Data>
     </Container>
   );
 };
