@@ -3,8 +3,9 @@ import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { useEffect } from "react";
 import { Dimensions, StyleSheet, useColorScheme } from "react-native";
+import { useQuery } from "react-query";
 import styled from "styled-components/native";
-import { Movie, TV } from "../api";
+import { Movie, moviesAPI, TV, tvAPI } from "../api";
 import { BLACK_COLOR, GRAY_COLOR } from "../colors";
 import Poster from "../components/Poster";
 import { makeImgPath } from "../utils";
@@ -53,6 +54,24 @@ const Detail: React.FC<DetailScreenProps> = ({
   route: { params },
 }) => {
   const isDark = useColorScheme() === "dark";
+
+  const { isLoading: moviesLoading, data: moviesData } = useQuery(
+    ["movies", params.id],
+    moviesAPI.detail,
+    {
+      enabled: "original_title" in params,
+    }
+  );
+  const { isLoading: tvLoading, data: tvData } = useQuery(
+    ["tv", params.id],
+    tvAPI.detail,
+    {
+      enabled: "original_name" in params,
+    }
+  );
+
+  console.log("movies: ", moviesData);
+  console.log("tv: ", tvData);
 
   useEffect(() => {
     setOptions({
