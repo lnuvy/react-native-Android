@@ -7,7 +7,7 @@ import { useColorScheme } from "react-native";
 const StackNavigator = createNativeStackNavigator();
 
 const Stack = () => {
-  const isDark = useColorScheme() !== "dark";
+  const isDark = useColorScheme() === "dark";
   return (
     <StackNavigator.Navigator
       screenOptions={{

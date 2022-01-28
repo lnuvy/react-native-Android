@@ -2,7 +2,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { useEffect } from "react";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, useColorScheme } from "react-native";
 import styled from "styled-components/native";
 import { Movie, TV } from "../api";
 import { BLACK_COLOR, GRAY_COLOR } from "../colors";
@@ -28,7 +28,7 @@ const Column = styled.View`
 `;
 
 const Title = styled.Text`
-  color: white;
+  color: ${(props) => props.theme.textColor};
   font-size: 35px;
   align-self: flex-end;
   width: 80%;
@@ -52,6 +52,8 @@ const Detail: React.FC<DetailScreenProps> = ({
   navigation: { setOptions },
   route: { params },
 }) => {
+  const isDark = useColorScheme() === "dark";
+
   useEffect(() => {
     setOptions({
       title: "original_title" in params ? "Movie" : "TV Show",
@@ -65,7 +67,9 @@ const Detail: React.FC<DetailScreenProps> = ({
           source={{ uri: makeImgPath(params.backdrop_path || "") }}
         />
         <LinearGradient
-          colors={[GRAY_COLOR, "transparent"]}
+          colors={
+            isDark ? ["transparent", GRAY_COLOR] : ["transparent", "white"]
+          }
           style={StyleSheet.absoluteFill}
         />
         <Column>

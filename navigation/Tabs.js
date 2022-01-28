@@ -13,7 +13,7 @@ import Stack from "./Stack";
 const Tab = createBottomTabNavigator();
 
 const Tabs = () => {
-  const isDark = useColorScheme() !== "dark";
+  const isDark = useColorScheme() === "dark";
   return (
     <Tab.Navigator
       sceneContainerStyle={{

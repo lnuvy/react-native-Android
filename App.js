@@ -22,7 +22,7 @@ export default function App() {
   const [assets] = useAssets([require("./picture.jpg")]);
   const [loaded] = useFonts(Ionicons.font);
 
-  const isDark = useColorScheme() !== "dark";
+  const isDark = useColorScheme() === "dark";
 
   if (!assets || !loaded) {
     return <AppLoading />;

@@ -6,11 +6,12 @@ import { useQuery } from "react-query";
 import { moviesAPI, tvAPI } from "../api";
 import Loader from "../components/Loader";
 import HList from "../components/HList";
+import { YELLOW_COLOR } from "../colors";
 
 const Container = styled.ScrollView``;
 
 const SearchBar = styled.TextInput`
-  background-color: white;
+  background-color: ${(props) => props.theme.inputBar};
   padding: 10px 15px;
   border-radius: 15px;
   width: 90%;
@@ -53,7 +54,7 @@ const Search = () => {
       {Platform.OS === "ios" ? (
         <SearchBar
           placeholder="Search for Media..."
-          placeholderTextColor="grey"
+          placeholderTextColor={YELLOW_COLOR}
           returnKeyType="search"
           onChangeText={onChangeText}
           onSubmitEditing={onSubmit}
@@ -61,7 +62,7 @@ const Search = () => {
       ) : (
         <SearchBar
           placeholder="Search for Media..."
-          placeholderTextColor="grey"
+          placeholderTextColor={YELLOW_COLOR}
           returnKeyLabel="검색"
           onChangeText={onChangeText}
           onSubmitEditing={onSubmit}
