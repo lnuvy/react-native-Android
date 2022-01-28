@@ -11,16 +11,17 @@ import { MovieResponse, moviesAPI } from "../api";
 import Loader from "../components/Loader";
 import HList from "../components/HList";
 
-const Container = styled.ScrollView`
+const Container = styled.FlatList`
   /* background-color: black; */
   background-color: ${(props) => props.theme.mainBgColor};
-`;
+` as unknown as typeof FlatList;
 
 const ListTitle = styled.Text`
-  color: black;
-  font-size: 18px;
+  color: white;
+  font-size: 24px;
   font-weight: 600;
   margin-left: 30px;
+  margin-bottom: 20px;
 `;
 
 // styled-components 를 이용한 FlatList 타입스크립트 적용법
@@ -75,7 +76,7 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   return loading ? (
     <Loader />
   ) : upComingData ? (
-    <FlatList
+    <Container
       onRefresh={onRefresh}
       refreshing={refreshing}
       ListHeaderComponent={

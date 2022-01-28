@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { Dimensions, StyleSheet } from "react-native";
 import styled from "styled-components/native";
 import { Movie, TV } from "../api";
-import { BLACK_COLOR } from "../colors";
+import { BLACK_COLOR, GRAY_COLOR } from "../colors";
 import Poster from "../components/Poster";
 import { makeImgPath } from "../utils";
 
@@ -65,7 +65,7 @@ const Detail: React.FC<DetailScreenProps> = ({
           source={{ uri: makeImgPath(params.backdrop_path || "") }}
         />
         <LinearGradient
-          colors={["transparent", BLACK_COLOR]}
+          colors={[GRAY_COLOR, "transparent"]}
           style={StyleSheet.absoluteFill}
         />
         <Column>

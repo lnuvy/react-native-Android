@@ -8,8 +8,8 @@ const ListContainer = styled.View`
 `;
 
 const ListTitle = styled.Text`
-  color: black;
-  font-size: 18px;
+  color: white;
+  font-size: 24px;
   font-weight: 600;
   margin-left: 30px;
   margin-bottom: 20px;
