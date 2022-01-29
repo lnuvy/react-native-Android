@@ -27,8 +27,8 @@ const Data = styled.View`
 
 const Overview = styled.Text`
   color: ${(props) => props.theme.textColor};
-  margin-top: 20px;
-  margin: 20px 0px;
+  /* margin-top: 10px; */
+  margin: 10px 0px;
 `;
 
 const VideoBtn = styled.TouchableOpacity`

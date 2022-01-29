@@ -4,7 +4,7 @@ import styled from "styled-components/native";
 // import Video from "react-native-video";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { makeImgPath, makeVideoPath } from "../utils";
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, StyleSheet, Text } from "react-native";
 import DetailHeader from "./DetailHeader";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
@@ -13,7 +13,23 @@ const View = styled.View`
   height: ${SCREEN_HEIGHT / 4}px;
 `;
 
-const Button = styled.Button``;
+const BtnContainer = styled.View`
+  flex-direction: row;
+  margin: 0px 20px;
+`;
+
+const Button = styled.TouchableOpacity`
+  padding-top: 10px;
+  align-items: center;
+  width: 50%;
+`;
+
+const BtnText = styled.Text`
+  color: ${(props) => props.theme.textColor};
+  font-size: 16px;
+  font-weight: 400;
+`;
+
 interface CoverVideoProps {
   videoKey: string;
   title: string;
@@ -28,11 +44,16 @@ const CoverVideo: React.FC<CoverVideoProps> = ({
   posterPath,
 }) => {
   const [isPlaying, setIsPlaying] = useState(true);
+  const [isPhase, setIsPhase] = useState(false);
 
   const onStateChange = useCallback((state) => {
     if (state === "ended") {
       setIsPlaying(false);
     }
+  }, []);
+
+  const togglePlay = useCallback(() => {
+    setIsPhase((prev) => !prev);
   }, []);
 
   const toggleView = useCallback(() => {
@@ -41,11 +62,11 @@ const CoverVideo: React.FC<CoverVideoProps> = ({
 
   return (
     <>
-      <View style={{ flex: 1 }}>
+      <View>
         {isPlaying ? (
           <YoutubePlayer
             height={SCREEN_HEIGHT / 4}
-            play={true}
+            play={!isPhase}
             videoId={videoKey}
             onChangeState={onStateChange}
           />
@@ -57,10 +78,14 @@ const CoverVideo: React.FC<CoverVideoProps> = ({
           />
         )}
       </View>
-      <Button
-        title={isPlaying ? "Show Poster/Title" : "Show Video"}
-        onPress={toggleView}
-      />
+      <BtnContainer>
+        <Button onPress={toggleView}>
+          <BtnText>{isPlaying ? "Show Title" : "Show Video"}</BtnText>
+        </Button>
+        <Button onPress={togglePlay}>
+          <BtnText>{isPhase ? "Playback" : "Phase"}</BtnText>
+        </Button>
+      </BtnContainer>
     </>
   );
 };
