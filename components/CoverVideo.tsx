@@ -7,13 +7,13 @@ import { makeImgPath, makeVideoPath } from "../utils";
 import { Dimensions, StyleSheet } from "react-native";
 import DetailHeader from "./DetailHeader";
 
-// const YOUTUBE_API_KEY = "AIzaSyAubgzQNI2YF5pLw2f40nIzAWxgN2Y5n_g";
-
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const View = styled.View`
   height: ${SCREEN_HEIGHT / 4}px;
 `;
+
+const Button = styled.Button``;
 interface CoverVideoProps {
   videoKey: string;
   title: string;
@@ -35,23 +35,33 @@ const CoverVideo: React.FC<CoverVideoProps> = ({
     }
   }, []);
 
+  const toggleView = useCallback(() => {
+    setIsPlaying((prev) => !prev);
+  }, []);
+
   return (
-    <View style={{ flex: 1 }}>
-      {isPlaying ? (
-        <YoutubePlayer
-          height={SCREEN_HEIGHT / 4}
-          play={true}
-          videoId={videoKey}
-          onChangeState={onStateChange}
-        />
-      ) : (
-        <DetailHeader
-          title={title}
-          posterPath={posterPath}
-          backDrop={backDrop}
-        />
-      )}
-    </View>
+    <>
+      <View style={{ flex: 1 }}>
+        {isPlaying ? (
+          <YoutubePlayer
+            height={SCREEN_HEIGHT / 4}
+            play={true}
+            videoId={videoKey}
+            onChangeState={onStateChange}
+          />
+        ) : (
+          <DetailHeader
+            title={title}
+            posterPath={posterPath}
+            backDrop={backDrop}
+          />
+        )}
+      </View>
+      <Button
+        title={isPlaying ? "Show Poster/Title" : "Show Video"}
+        onPress={toggleView}
+      />
+    </>
   );
 };
 
