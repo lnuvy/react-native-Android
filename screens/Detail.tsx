@@ -2,7 +2,14 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { useEffect } from "react";
-import { Dimensions, Linking, StyleSheet, useColorScheme } from "react-native";
+import {
+  Dimensions,
+  Linking,
+  StyleSheet,
+  TouchableOpacity,
+  useColorScheme,
+  Share,
+} from "react-native";
 import { useQuery } from "react-query";
 import styled from "styled-components/native";
 import { Movie, moviesAPI, TV, tvAPI } from "../api";
@@ -53,7 +60,6 @@ const Detail: React.FC<DetailScreenProps> = ({
   navigation: { setOptions },
   route: { params },
 }) => {
-  const isDark = useColorScheme() === "dark";
   const isMovie = "original_title" in params;
 
   const { isLoading, data } = useQuery(
@@ -61,11 +67,36 @@ const Detail: React.FC<DetailScreenProps> = ({
     isMovie ? moviesAPI.detail : tvAPI.detail
   );
 
+  const shareMedia = async () => {
+    await Share.share({
+      url: isMovie
+        ? `https://www.imdb.com/title/${data.imdb_id}`
+        : data.homepage,
+      message: params.overview,
+      title:
+        "original_title" in params
+          ? params.original_title
+          : params.original_name,
+    });
+  };
+
+  const ShareButton = () => (
+    <TouchableOpacity onPress={shareMedia}>
+      <Ionicons
+        name="share-outline"
+        color={isDark ? "white" : "black"}
+        size={20}
+      />
+    </TouchableOpacity>
+  );
+  const isDark = useColorScheme() === "dark";
+
   // console.log("디테일 77번: ", data?.videos?.results[0]?.key);
 
   useEffect(() => {
     setOptions({
       title: "original_title" in params ? "Movie" : "TV Show",
+      headerRight: () => <ShareButton />,
     });
   }, []);
 
