@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   useColorScheme,
   Share,
+  Platform,
 } from "react-native";
 import { useQuery } from "react-query";
 import styled from "styled-components/native";
@@ -68,16 +69,26 @@ const Detail: React.FC<DetailScreenProps> = ({
   );
 
   const shareMedia = async () => {
-    await Share.share({
-      url: isMovie
-        ? `https://www.imdb.com/title/${data.imdb_id}`
-        : data.homepage,
-      message: params.overview,
-      title:
-        "original_title" in params
-          ? params.original_title
-          : params.original_name,
-    });
+    const isAndroid = Platform.OS === "android";
+    const homepage = isMovie
+      ? `https://www.imdb.com/title/${data.imdb_id}`
+      : data.homepage;
+    if (isAndroid) {
+      await Share.share({
+        message: homepage,
+        title:
+          "original_title" in params
+            ? params.original_title
+            : params.original_name,
+      });
+    } else {
+      await Share.share({
+        url: isMovie
+          ? `https://www.imdb.com/title/${data.imdb_id}`
+          : data.homepage,
+        message: params.overview,
+      });
+    }
   };
 
   const ShareButton = () => (
@@ -96,9 +107,16 @@ const Detail: React.FC<DetailScreenProps> = ({
   useEffect(() => {
     setOptions({
       title: "original_title" in params ? "Movie" : "TV Show",
-      headerRight: () => <ShareButton />,
     });
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      setOptions({
+        headerRight: () => <ShareButton />,
+      });
+    }
+  }, [data]);
 
   const openYouTube = async (videoId: string) => {
     const url = makeVideoPath(videoId);
