@@ -38,7 +38,7 @@ const Search = () => {
 
   const onChangeText = (text: string) => {
     setQuery(text);
-    console.log(text);
+    // console.log(text);
   };
   const onSubmit = () => {
     if (query === "") {

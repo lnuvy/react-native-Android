@@ -15,10 +15,18 @@ const View = styled.View`
   height: ${SCREEN_HEIGHT / 4}px;
 `;
 interface CoverVideoProps {
-  path: string;
+  videoKey: string;
+  title: string;
+  posterPath: string;
+  backDrop: string;
 }
 
-const CoverVideo: React.FC<CoverVideoProps> = ({ path }) => {
+const CoverVideo: React.FC<CoverVideoProps> = ({
+  videoKey,
+  title,
+  backDrop,
+  posterPath,
+}) => {
   const [isPlaying, setIsPlaying] = useState(true);
 
   const onStateChange = useCallback((state) => {
@@ -33,10 +41,16 @@ const CoverVideo: React.FC<CoverVideoProps> = ({ path }) => {
         <YoutubePlayer
           height={SCREEN_HEIGHT / 4}
           play={true}
-          videoId={path}
+          videoId={videoKey}
           onChangeState={onStateChange}
         />
-      ) : null}
+      ) : (
+        <DetailHeader
+          title={title}
+          posterPath={posterPath}
+          backDrop={backDrop}
+        />
+      )}
     </View>
   );
 };

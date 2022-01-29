@@ -77,9 +77,9 @@ const Slide: React.FC<SlideProps> = ({
       <View style={{ flex: 1 }}>
         <BgImg source={{ uri: makeImgPath(backdropPath) }} />
         <BlurView
-          intensity={Platform.OS === "ios" ? 60 : 100}
-          tint={"dark"}
           style={StyleSheet.absoluteFill}
+          intensity={Platform.OS === "ios" ? 55 : 100} // ios 환경 새로고침시 해당속성 적용안됨
+          tint={"dark"}
         >
           <Wrapper>
             <Poster path={posterPath} />

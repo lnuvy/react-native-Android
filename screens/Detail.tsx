@@ -77,7 +77,7 @@ const Detail: React.FC<DetailScreenProps> = ({
 
   return (
     <Container>
-      <DetailHeader
+      <CoverVideo
         title={
           "original_title" in params
             ? params.original_title
@@ -85,6 +85,7 @@ const Detail: React.FC<DetailScreenProps> = ({
         }
         posterPath={params.poster_path || ""}
         backDrop={params.backdrop_path || ""}
+        videoKey={data?.videos?.results[0]?.key}
       />
       <Data>
         <Overview>{params.overview}</Overview>
