@@ -34,7 +34,9 @@
     "react-native-video": "^5.2.0",
     "react-native-web": "0.17.1",
     "react-native-web-swiper": "^2.2.2",
+    "react-native-webview": "^11.17.1",
     "react-native-youtube": "^2.0.2",
+    "react-native-youtube-iframe": "^2.2.2",
     "react-query": "^3.34.12",
     "styled-components": "^5.3.3",
     "tslint-config-prettier": "^1.18.0"

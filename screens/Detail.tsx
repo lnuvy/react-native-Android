@@ -26,7 +26,10 @@ const Headview = styled.View`
   padding: 0px 20px;
 `;
 
-const Background = styled.Image``;
+const Background = styled.Image`
+  height: 100%;
+  position: absolute;
+`;
 
 const Column = styled.View`
   flex-direction: row;
@@ -36,7 +39,7 @@ const Title = styled.Text`
   color: ${(props) => props.theme.textColor};
   font-size: 35px;
   align-self: flex-end;
-  width: 80%;
+  width: 75%;
   margin-left: 15px;
   font-weight: 500;
 `;
@@ -99,18 +102,21 @@ const Detail: React.FC<DetailScreenProps> = ({
     <Container>
       <Headview>
         {isLoading ? (
-          <Background
-            source={{ uri: makeImgPath(params.backdrop_path || "") }}
-          />
+          <>
+            <Background
+              source={{ uri: makeImgPath(params.backdrop_path || "") }}
+              style={StyleSheet.absoluteFill}
+            />
+            <LinearGradient
+              colors={
+                isDark ? ["transparent", GRAY_COLOR] : ["transparent", "white"]
+              }
+              style={StyleSheet.absoluteFill}
+            />
+          </>
         ) : (
           <CoverVideo path={data?.videos?.results[0]?.key || ""} />
         )}
-        <LinearGradient
-          colors={
-            isDark ? ["transparent", GRAY_COLOR] : ["transparent", "white"]
-          }
-          style={StyleSheet.absoluteFill}
-        />
         <Column>
           <Poster path={params.poster_path || ""} />
           <Title>

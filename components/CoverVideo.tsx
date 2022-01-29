@@ -1,23 +1,42 @@
-import React from "react";
+import React, { useCallback, useState } from "react";
 import styled from "styled-components/native";
 // npm i --save-dev @types/react-native-video
 // import Video from "react-native-video";
-
-import YouTube from "react-native-youtube";
-
+import YoutubePlayer from "react-native-youtube-iframe";
 import { makeVideoPath } from "../utils";
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
-const YOUTUBE_API_KEY = "AIzaSyAubgzQNI2YF5pLw2f40nIzAWxgN2Y5n_g";
+// const YOUTUBE_API_KEY = "AIzaSyAubgzQNI2YF5pLw2f40nIzAWxgN2Y5n_g";
+
+const { height: SCREEN_HEIGHT } = Dimensions.get("window");
+
+const View = styled.View`
+  height: ${SCREEN_HEIGHT / 4}px;
+`;
 interface CoverVideoProps {
   path: string;
 }
 
 const CoverVideo: React.FC<CoverVideoProps> = ({ path }) => {
-  console.log("CoverVideo 13번: ", makeVideoPath(path));
+  const [isPlaying, setIsPlaying] = useState(true);
+
+  const onStateChange = useCallback((state) => {
+    if (state === "ended") {
+      setIsPlaying(false);
+    }
+  }, []);
 
   return (
-    <YouTube apiKey={YOUTUBE_API_KEY} style={StyleSheet.absoluteFill} play />
+    <View style={{ flex: 1 }}>
+      {isPlaying ? (
+        <YoutubePlayer
+          height={SCREEN_HEIGHT / 4}
+          play={true}
+          videoId={path}
+          onChangeState={onStateChange}
+        />
+      ) : null}
+    </View>
   );
 };
 
