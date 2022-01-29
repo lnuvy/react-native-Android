@@ -83,7 +83,13 @@ const CoverVideo: React.FC<CoverVideoProps> = ({
           <BtnText>{isPlaying ? "Show Title" : "Show Video"}</BtnText>
         </Button>
         <Button onPress={togglePlay}>
-          <BtnText>{isPhase ? "Playback" : "Phase"}</BtnText>
+          {isPlaying ? (
+            <BtnText>{isPhase ? "Playback" : "Phase"}</BtnText>
+          ) : (
+            <BtnText style={{ opacity: 0.5 }}>
+              {isPhase ? "Playback" : "Phase"}
+            </BtnText>
+          )}
         </Button>
       </BtnContainer>
     </>
