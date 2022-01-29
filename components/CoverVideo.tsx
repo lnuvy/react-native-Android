@@ -3,8 +3,9 @@ import styled from "styled-components/native";
 // npm i --save-dev @types/react-native-video
 // import Video from "react-native-video";
 import YoutubePlayer from "react-native-youtube-iframe";
-import { makeVideoPath } from "../utils";
+import { makeImgPath, makeVideoPath } from "../utils";
 import { Dimensions, StyleSheet } from "react-native";
+import DetailHeader from "./DetailHeader";
 
 // const YOUTUBE_API_KEY = "AIzaSyAubgzQNI2YF5pLw2f40nIzAWxgN2Y5n_g";
 

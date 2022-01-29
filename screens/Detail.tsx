@@ -13,35 +13,12 @@ import Poster from "../components/Poster";
 import { makeImgPath, makeVideoPath } from "../utils";
 import { Ionicons } from "@expo/vector-icons";
 import * as WebBrowser from "expo-web-browser";
+import DetailHeader from "../components/DetailHeader";
 
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Container = styled.ScrollView`
   background-color: ${(props) => props.theme.mainBgColor};
-`;
-
-const Headview = styled.View`
-  height: ${SCREEN_HEIGHT / 4}px;
-  justify-content: flex-end;
-  padding: 0px 20px;
-`;
-
-const Background = styled.Image`
-  height: 100%;
-  position: absolute;
-`;
-
-const Column = styled.View`
-  flex-direction: row;
-`;
-
-const Title = styled.Text`
-  color: ${(props) => props.theme.textColor};
-  font-size: 35px;
-  align-self: flex-end;
-  width: 75%;
-  margin-left: 15px;
-  font-weight: 500;
 `;
 
 const Data = styled.View`
@@ -100,32 +77,15 @@ const Detail: React.FC<DetailScreenProps> = ({
 
   return (
     <Container>
-      <Headview>
-        {isLoading ? (
-          <>
-            <Background
-              source={{ uri: makeImgPath(params.backdrop_path || "") }}
-              style={StyleSheet.absoluteFill}
-            />
-            <LinearGradient
-              colors={
-                isDark ? ["transparent", GRAY_COLOR] : ["transparent", "white"]
-              }
-              style={StyleSheet.absoluteFill}
-            />
-          </>
-        ) : (
-          <CoverVideo path={data?.videos?.results[0]?.key || ""} />
-        )}
-        <Column>
-          <Poster path={params.poster_path || ""} />
-          <Title>
-            {"original_title" in params
-              ? params.original_title
-              : params.original_name}
-          </Title>
-        </Column>
-      </Headview>
+      <DetailHeader
+        title={
+          "original_title" in params
+            ? params.original_title
+            : params.original_name
+        }
+        posterPath={params.poster_path || ""}
+        backDrop={params.backdrop_path || ""}
+      />
       <Data>
         <Overview>{params.overview}</Overview>
         {isLoading ? <Loader /> : null}
