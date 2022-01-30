@@ -24,21 +24,8 @@ const ListTitle = styled.Text`
   margin-bottom: 20px;
 `;
 
-// styled-components 를 이용한 FlatList 타입스크립트 적용법
-const TrendingScroll = styled.FlatList`
-  margin-top: 20px;
-` as unknown as typeof FlatList;
-
-const ListContainer = styled.View`
-  margin-bottom: 40px;
-`;
-
 const CommingSoonTitle = styled(ListTitle)`
   margin-bottom: 30px;
-`;
-
-const VSeparator = styled.View`
-  width: 20px;
 `;
 
 const HSeparator = styled.View`
@@ -48,7 +35,8 @@ const HSeparator = styled.View`
 const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
-  const QueryClient = useQueryClient();
+  const [refreshing, setRefreshing] = useState(false);
+  const queryClient = useQueryClient();
   const {
     isLoading: nowPlayingLoading,
     data: nowPlayingData,
@@ -65,13 +53,13 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
     isRefetching: isRefetchingTrending,
   } = useQuery<MovieResponse>(["movies", "upComing"], moviesAPI.upComing);
 
-  const onRefresh = async () => {
-    QueryClient.refetchQueries(["movies"]);
-  };
-
   const loading = nowPlayingLoading || upComingLoading || trendingLoading;
-  const refreshing =
-    isRefetchingNowPlaying || isRefetchingUpComing || isRefetchingTrending;
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await queryClient.refetchQueries(["movies"]);
+    setRefreshing(false);
+  };
 
   return loading ? (
     <Loader />

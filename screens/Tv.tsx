@@ -1,11 +1,10 @@
 import React from "react";
 import { useState } from "react";
-import { View, Text, ScrollView, FlatList, RefreshControl } from "react-native";
-import { QueryClient, useQuery, useQueryClient } from "react-query";
+import { ScrollView, RefreshControl } from "react-native";
+import { useQuery, useQueryClient } from "react-query";
 import { tvAPI } from "../api";
-import HList, { HListSeparator } from "../components/HList";
+import HList from "../components/HList";
 import Loader from "../components/Loader";
-import VMedia from "../components/VMedia";
 
 const Tv = () => {
   const [refreshing, setRefreshing] = useState(false);
