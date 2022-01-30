@@ -24,6 +24,7 @@ const Title = styled.Text<{ isDark: boolean }>`
   font-weight: 600;
   color: ${(props) => (props.isDark ? "white" : props.theme.textColor)};
 `;
+
 const Wrapper = styled.View`
   flex-direction: row;
   height: 100%;
@@ -60,7 +61,7 @@ const Slide: React.FC<SlideProps> = ({
   overview,
   fullData,
 }) => {
-  const isDark = useColorScheme() !== "dark";
+  const isDark = useColorScheme() === "dark";
   const navigation = useNavigation();
   const go2Detail = () => {
     //@ts-ignore
@@ -78,7 +79,7 @@ const Slide: React.FC<SlideProps> = ({
         <BgImg source={{ uri: makeImgPath(backdropPath) }} />
         <BlurView
           style={StyleSheet.absoluteFill}
-          intensity={Platform.OS === "ios" ? 55 : 100} // ios 환경 새로고침시 해당속성 적용안됨
+          intensity={60} // ios 환경 새로고침시 해당속성 적용안됨
           tint={"dark"}
         >
           <Wrapper>
