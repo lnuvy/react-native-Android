@@ -6,7 +6,12 @@ import Swiper from "react-native-web-swiper";
 import Slide from "../components/Slide";
 import HMedia from "../components/HMedia";
 import VMedia from "../components/VMedia";
-import { QueryClient, useQuery, useQueryClient } from "react-query";
+import {
+  QueryClient,
+  useInfiniteQuery,
+  useQuery,
+  useQueryClient,
+} from "react-query";
 import { MovieResponse, moviesAPI } from "../api";
 import Loader from "../components/Loader";
 import HList from "../components/HList";
@@ -38,21 +43,12 @@ const { height: SCREEN_HEIGHT } = Dimensions.get("window");
 const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   const [refreshing, setRefreshing] = useState(false);
   const queryClient = useQueryClient();
-  const {
-    isLoading: nowPlayingLoading,
-    data: nowPlayingData,
-    isRefetching: isRefetchingNowPlaying,
-  } = useQuery<MovieResponse>(["movies", "nowPlaying"], moviesAPI.nowPlaying);
-  const {
-    isLoading: upComingLoading,
-    data: upComingData,
-    isRefetching: isRefetchingUpComing,
-  } = useQuery<MovieResponse>(["movies", "trending"], moviesAPI.trending);
-  const {
-    isLoading: trendingLoading,
-    data: trendingData,
-    isRefetching: isRefetchingTrending,
-  } = useQuery<MovieResponse>(["movies", "upComing"], moviesAPI.upComing);
+  const { isLoading: nowPlayingLoading, data: nowPlayingData } =
+    useQuery<MovieResponse>(["movies", "nowPlaying"], moviesAPI.nowPlaying);
+  const { isLoading: upComingLoading, data: upComingData } =
+    useInfiniteQuery<MovieResponse>(["movies", "trending"], moviesAPI.trending);
+  const { isLoading: trendingLoading, data: trendingData } =
+    useQuery<MovieResponse>(["movies", "upComing"], moviesAPI.upComing);
 
   const loading = nowPlayingLoading || upComingLoading || trendingLoading;
 
@@ -105,7 +101,8 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
           <CommingSoonTitle>Comming Soon...</CommingSoonTitle>
         </>
       }
-      data={upComingData.results}
+      //useInfinityQuery 사용하기
+      data={upComingData.pages.map((page) => page.results).flat()}
       keyExtractor={(item) => item.id + ""}
       ItemSeparatorComponent={HSeparator}
       renderItem={({ item }) => (
