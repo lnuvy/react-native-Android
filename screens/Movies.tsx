@@ -45,10 +45,31 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   const queryClient = useQueryClient();
   const { isLoading: nowPlayingLoading, data: nowPlayingData } =
     useQuery<MovieResponse>(["movies", "nowPlaying"], moviesAPI.nowPlaying);
-  const { isLoading: upComingLoading, data: upComingData } =
-    useInfiniteQuery<MovieResponse>(["movies", "trending"], moviesAPI.trending);
+  const {
+    isLoading: upComingLoading,
+    data: upComingData,
+    hasNextPage,
+    fetchNextPage,
+  } = useInfiniteQuery<MovieResponse>(
+    ["movies", "upComing"],
+    moviesAPI.upComing,
+    {
+      getNextPageParam: (currentPage) => {
+        const nextPage = currentPage.page + 1;
+        if (nextPage > currentPage.total_pages) {
+          return null;
+        } else {
+          return nextPage;
+        }
+      },
+    }
+  );
+
+  // 데이터
+  console.log(upComingData);
+
   const { isLoading: trendingLoading, data: trendingData } =
-    useQuery<MovieResponse>(["movies", "upComing"], moviesAPI.upComing);
+    useQuery<MovieResponse>(["movies", "trending"], moviesAPI.trending);
 
   const loading = nowPlayingLoading || upComingLoading || trendingLoading;
 
@@ -59,7 +80,9 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   };
 
   const loadMore = () => {
-    alert("load more!");
+    if (hasNextPage) {
+      fetchNextPage();
+    }
   };
 
   return loading ? (

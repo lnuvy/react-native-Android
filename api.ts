@@ -49,9 +49,9 @@ export const moviesAPI = {
     fetch(`${BASE_URL}/trending/movie/week?api_key=${API_KEY}`).then((res) =>
       res.json()
     ),
-  upComing: () =>
+  upComing: ({ pageParam }) =>
     fetch(
-      `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1&region=KR`
+      `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=${pageParam}&region=KR`
     ).then((res) => res.json()),
   nowPlaying: () =>
     fetch(
@@ -73,15 +73,15 @@ export const moviesAPI = {
 
 export const tvAPI = {
   trending: () =>
-    fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}`).then((res) =>
-      res.json()
+    fetch(`${BASE_URL}/trending/tv/week?api_key=${API_KEY}&region=KR`).then(
+      (res) => res.json()
     ),
   airingToday: () =>
-    fetch(`${BASE_URL}/tv/airing_today?api_key=${API_KEY}`).then((res) =>
-      res.json()
+    fetch(`${BASE_URL}/tv/airing_today?api_key=${API_KEY}&region=KR`).then(
+      (res) => res.json()
     ),
   topRated: () =>
-    fetch(`${BASE_URL}/tv/top_rated?api_key=${API_KEY}`).then((res) =>
+    fetch(`${BASE_URL}/tv/top_rated?api_key=${API_KEY}&region=KR`).then((res) =>
       res.json()
     ),
   search: ({ queryKey }) => {
