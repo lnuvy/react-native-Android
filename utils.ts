@@ -9,5 +9,5 @@ export const makeVideoPath = (key: string) => {
   return `https://m.youtube.com/watch?v=${key}`;
 };
 
-export const fetchMore = (hasNext: boolean | undefined, fetchNext) =>
+export const fetchMore = (hasNext: boolean | undefined, fetchNext: Function) =>
   hasNext ? fetchNext() : null;

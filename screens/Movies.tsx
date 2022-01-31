@@ -31,7 +31,7 @@ const ListTitle = styled.Text`
 `;
 
 const CommingSoonTitle = styled(ListTitle)`
-  color: ${(props) => props.theme.textColor}
+  color: ${(props) => props.theme.textColor};
   margin-bottom: 30px;
 `;
 

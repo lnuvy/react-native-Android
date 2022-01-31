@@ -9,7 +9,7 @@ const ListContainer = styled.View`
 `;
 
 const ListTitle = styled.Text`
-  color: ${(props) => props.theme.textColor}
+  color: ${(props) => props.theme.textColor};
   font-size: 24px;
   font-weight: 600;
   margin-left: 30px;
