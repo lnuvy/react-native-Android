@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Dimensions, FlatList } from "react-native";
+import { ActivityIndicator, Alert, Dimensions, FlatList } from "react-native";
 import styled from "styled-components/native";
 import Swiper from "react-native-web-swiper";
 import Slide from "../components/Slide";
@@ -62,10 +62,17 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
     setRefreshing(false);
   };
 
+  const loadMore = () => {
+    alert("load more!");
+  };
+
   return loading ? (
     <Loader />
   ) : upComingData ? (
     <Container
+      // 인피니티 스크롤 리액트네이티브 프롭
+      onEndReached={loadMore}
+      onEndReachedThreshold={0.4}
       onRefresh={onRefresh}
       refreshing={refreshing}
       ListHeaderComponent={
