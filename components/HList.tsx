@@ -2,6 +2,7 @@ import React from "react";
 import { FlatList } from "react-native";
 import styled from "styled-components/native";
 import VMedia from "./VMedia";
+import { fetchMore } from "../utils";
 
 const ListContainer = styled.View`
   margin-bottom: 20px;
@@ -22,22 +23,25 @@ export const HListSeparator = styled.View`
 interface HListProps {
   title: string;
   data: any[];
+  hasNext: boolean | undefined;
+  fetchNext: Function;
 }
 
-const HList: React.FC<HListProps> = ({ title, data }) => (
+const HList: React.FC<HListProps> = ({ title, data, hasNext, fetchNext }) => (
   <ListContainer>
     <ListTitle>{title}</ListTitle>
     <FlatList
       data={data}
+      onEndReached={() => fetchMore(hasNext, fetchNext)}
+      onEndReachedThreshold={0.4} // Test
       horizontal
-      showsHorizontalScrollIndicator={false}
+      showsHorizontalScrollIndicator={true}
       ItemSeparatorComponent={HListSeparator}
       contentContainerStyle={{ paddingHorizontal: 20 }}
       keyExtractor={(item) => item.id + ""}
       renderItem={({ item }) => (
         <VMedia
           posterPath={item.poster_path}
-          // 유용한 ??
           originalTitle={item.original_title ?? item.original_name}
           voteAverage={item.vote_average}
           fullData={item}
@@ -48,26 +52,3 @@ const HList: React.FC<HListProps> = ({ title, data }) => (
 );
 
 export default HList;
-
-// <ListContainer>
-//             <ListTitle>Trending Movies</ListTitle>
-//             {trendingData ? (
-//               <TrendingScroll
-//                 contentContainerStyle={{
-//                   paddingHorizontal: 20,
-//                 }}
-//                 keyExtractor={(item) => item.id + ""}
-//                 horizontal
-//                 showsHorizontalScrollIndicator={false}
-//                 data={trendingData.results}
-//                 ItemSeparatorComponent={() => <VSeparator />}
-//                 renderItem={({ item }) => (
-//                   <VMedia
-//                     posterPath={item.poster_path || ""}
-//                     originalTitle={item.original_title}
-//                     voteAverage={item.vote_average}
-//                   />
-//                 )}
-//               />
-//             ) : null}
-//           </ListContainer>

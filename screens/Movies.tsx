@@ -15,6 +15,7 @@ import {
 import { MovieResponse, moviesAPI } from "../api";
 import Loader from "../components/Loader";
 import HList from "../components/HList";
+import { fetchMore } from "../utils";
 
 const Container = styled.FlatList`
   /* background-color: black; */
@@ -48,8 +49,8 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
   const {
     isLoading: upComingLoading,
     data: upComingData,
-    hasNextPage,
-    fetchNextPage,
+    hasNextPage: hasUpComingNext,
+    fetchNextPage: upComingFetchNext,
   } = useInfiniteQuery<MovieResponse>(
     ["movies", "upComing"],
     moviesAPI.upComing,
@@ -65,11 +66,21 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
     }
   );
 
-  // 데이터
-  console.log(upComingData);
-
-  const { isLoading: trendingLoading, data: trendingData } =
-    useQuery<MovieResponse>(["movies", "trending"], moviesAPI.trending);
+  const {
+    isLoading: trendingLoading,
+    data: trendingData,
+    hasNextPage: hasTrendingNext,
+    fetchNextPage: trendingFetchNext,
+  } = useInfiniteQuery<MovieResponse>(
+    ["movies", "trending"],
+    moviesAPI.trending,
+    {
+      getNextPageParam: (currentPage) => {
+        const nextPage = currentPage.page + 1;
+        return nextPage > currentPage.total_pages ? null : nextPage;
+      },
+    }
+  );
 
   const loading = nowPlayingLoading || upComingLoading || trendingLoading;
 
@@ -79,19 +90,12 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
     setRefreshing(false);
   };
 
-  const loadMore = () => {
-    if (hasNextPage) {
-      fetchNextPage();
-    }
-  };
-
   return loading ? (
     <Loader />
   ) : upComingData ? (
     <Container
       // 인피니티 스크롤 리액트네이티브 프롭
-      onEndReached={loadMore}
-      onEndReachedThreshold={0.4}
+      onEndReached={() => fetchMore(hasUpComingNext, upComingFetchNext)}
       onRefresh={onRefresh}
       refreshing={refreshing}
       ListHeaderComponent={
@@ -119,7 +123,12 @@ const Movies: React.FC<NativeStackScreenProps<any, "Movies">> = () => {
             ))}
           </Swiper>
           {trendingData ? (
-            <HList title="Trending Movies" data={trendingData.results} />
+            <HList
+              title="Trending Movies"
+              data={trendingData?.pages.map((page) => page.results).flat()}
+              hasNext={hasTrendingNext}
+              fetchNext={trendingFetchNext}
+            />
           ) : null}
           <CommingSoonTitle>Comming Soon...</CommingSoonTitle>
         </>
